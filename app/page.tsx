@@ -1,7 +1,10 @@
+import LoginForm from "./LoginForm";
 
 
 export default function Home() {
   return (
-    <div>Hello World</div>
+    <div className="m-auto h-screen flex items-center bg-very-light-green">
+      <LoginForm />
+    </div>
   );
 }

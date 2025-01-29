@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model articles {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  company companies @relation("CompanyArticles", fields: [companyId], references: [id])
+  companyId String @db.ObjectId
+  content String
+  date    String
+  editor  users?    @relation("EditorArticles", fields: [editorId], references: [id])
+  editorId String?  @db.ObjectId
+  image   String
+  link    String
+  status  String
+  title   String
+  writer  users    @relation("WriterArticles", fields: [writerId], references: [id])
+  writerId String  @db.ObjectId
+}
+
+model companies {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  logo     String
+  name     String
+  status   String
+  articles articles[] @relation("CompanyArticles") // Backward relation for company-articles
+}
+
+model users {
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  firstname      String
+  lastname       String
+  password       String
+  status         String
+  type           String
+  username       String
+  articlesEdited articles[] @relation("EditorArticles") // Backward relation for editor-articles
+  articlesWritten articles[] @relation("WriterArticles") // Backward relation for writer-articles
+}
+
