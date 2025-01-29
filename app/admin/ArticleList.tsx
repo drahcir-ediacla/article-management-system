@@ -74,7 +74,7 @@ const ArticleList = async () => {
                                         : "No editor assigned"}
                                 </td>
                                 <td className="px-6 py-4">
-                                    <span className="inline-block text-xs py-[4px] px-[8px] rounded-md bg-[#d4edda] text-[#155724]">{article.status}</span>
+                                    <span className={`inline-block text-xs py-[4px] px-[8px] rounded-md  ${article.status === 'Published' ? 'text-[#155724] bg-[#d4edda]' : 'text-[#721c24] bg-[#f8d7da]'}`}>{article.status}</span>
                                 </td>
                                 <td className="px-6 py-4 text-right">
                                     <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
