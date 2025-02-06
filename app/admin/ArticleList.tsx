@@ -11,10 +11,10 @@ const ArticleList = async () => {
                 select: { id: true, name: true, logo: true, status: true },
             },
             writer: {
-                select: { id: true, firstname: true, lastname: true, type: true, status: true },
+                select: { id: true, firstName: true, lastName: true, type: true, status: true },
             },
             editor: {
-                select: { id: true, firstname: true, lastname: true, type: true, status: true },
+                select: { id: true, firstName: true, lastName: true, type: true, status: true },
             },
         },
     });
@@ -66,11 +66,11 @@ const ArticleList = async () => {
                                     <Link href={article.link} target="_blank" className="text-blue-600 dark:text-blue-500 hover:underline">View Link</Link>
                                 </td>
                                 <td className="px-6 py-4">
-                                    {article.writer.firstname} {article.writer.lastname}
+                                    {article.writer.firstName} {article.writer.lastName}
                                 </td>
                                 <td className="px-6 py-4">
                                     {article.editor
-                                        ? `${article.editor.firstname} ${article.editor.lastname}`
+                                        ? `${article.editor.firstName} ${article.editor.lastName}`
                                         : "No editor assigned"}
                                 </td>
                                 <td className="px-6 py-4">

@@ -10,17 +10,17 @@ datasource db {
 model articles {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
   company companies @relation("CompanyArticles", fields: [companyId], references: [id])
-  companyId String @db.ObjectId
+  companyId String @db.ObjectId @map("company_id")
   content String
   date    String
   editor  users?    @relation("EditorArticles", fields: [editorId], references: [id])
-  editorId String?  @db.ObjectId
+  editorId String?  @db.ObjectId @map("editor_id")
   image   String
   link    String
   status  String
   title   String
   writer  users    @relation("WriterArticles", fields: [writerId], references: [id])
-  writerId String  @db.ObjectId
+  writerId String  @db.ObjectId @map("writer_id")
 }
 
 model companies {
@@ -33,12 +33,12 @@ model companies {
 
 model users {
   id             String @id @default(auto()) @map("_id") @db.ObjectId
-  firstname      String
-  lastname       String
+  firstName      String @map("first_name")
+  lastName       String @map("last_name")
   password       String
   status         String
   type           String
-  username       String
+  userName       String @unique @map("user_name")
   articlesEdited articles[] @relation("EditorArticles") // Backward relation for editor-articles
   articlesWritten articles[] @relation("WriterArticles") // Backward relation for writer-articles
 }
