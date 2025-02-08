@@ -30,12 +30,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     // );
 
     // Generate JWT tokens
-    const accessToken = generateAccessToken({ id: user.id, userName: user.userName, type: user.type });
-    const refreshToken = generateRefreshToken({ id: user.id, userName: user.userName, type: user.type });
+    const accessToken = generateAccessToken({ userId: user.id, userName: user.userName, type: user.type });
+    const refreshToken = generateRefreshToken({ userId: user.id, userName: user.userName, type: user.type });
     const expirationDate = new Date(Date.now() + 1 * 24 * 60 * 60 * 1000); // 1 day from now
 
     // Create a response object
-    const response = NextResponse.json({ message: "Login successful", status: 200, accessToken });
+    const response = NextResponse.json({ message: "Login successful", accessToken}, {status: 200} );
 
     try {
       // Check if a refresh token already exists for the user

@@ -4,10 +4,11 @@ import { getAuthUser } from "@/app/lib/getAuthUser";
 
 export async function GET(request: NextRequest) {
     const tokenCookie = request.cookies.get("refreshJwt");
-  if (!tokenCookie) return null;
-
+  if (!tokenCookie) {
+    return NextResponse.json({ message: "No refresh token provided" }, { status: 401 });
+}
   const refreshToken = tokenCookie?.value;
-  if (!refreshToken) return null;
+  console.log("Extracted Refresh Token:", refreshToken);
 
   try {
     // Delete refresh token using Prisma
