@@ -12,6 +12,9 @@ if (!accessTokenSecret) {
   throw new Error("ACCESS_TOKEN_SECRET is not set in environment variables.");
 }
 
+if (!refreshTokenSecret) {
+  throw new Error("REFRESH_TOKEN_SECRET is not set in environment variables.");
+}
 
 /**
  * Generate a JWT token

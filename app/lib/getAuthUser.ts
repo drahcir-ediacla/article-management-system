@@ -31,6 +31,10 @@ export async function getAuthUser(request: NextRequest): Promise<AuthUser | null
 
   const token = authHeader.split(" ")[1]; // Extract token after "Bearer "
   console.log("Extracted Token:", token);
+  if (!token) {
+    console.error("No token provided");
+    return null; // Ensure function exits
+  }
 
   try {
     return verifyToken(token); // Decode and return user info
