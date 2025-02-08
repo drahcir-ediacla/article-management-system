@@ -1,6 +1,8 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
-
+interface AuthUser extends JwtPayload {
+  id: string;
+}
 
 // Secret keys for signing tokens (you can use different keys)
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "";
@@ -15,16 +17,22 @@ if (!accessTokenSecret) {
  * Generate a JWT token
  */
 export function generateAccessToken(payload: object): string {
-  return jwt.sign(payload, accessTokenSecret, {expiresIn: "15m"} );
+  return jwt.sign(payload, accessTokenSecret, {expiresIn: "30s"} );
 }
 
 export function generateRefreshToken(payload: object): string {
-  return jwt.sign(payload, refreshTokenSecret, { expiresIn: "1d" });
+  return jwt.sign(payload, refreshTokenSecret, { expiresIn: "7d" });
 }
 
 /**
  * Verify a JWT token
  */
-export function verifyToken(token: string) {
-  return jwt.verify(token, accessTokenSecret);
+export function verifyToken(token: string): AuthUser | null {
+  try {
+    const decoded = jwt.verify(token, accessTokenSecret!) as AuthUser;
+    return decoded;
+  } catch (error) {
+    console.error("Token verification failed:", error);
+    return null;
+  }
 }

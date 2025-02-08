@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch articles with conditional inclusion
-    const articles = await prisma.articles.findMany({
+    const articles = await prisma.article.findMany({
       include: {
         company: {
           select: { id: true, name: true, logo: true, status: true },
@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const newArticle = await prisma.articles.create({
+    const newArticle = await prisma.article.create({
       data: {
         image,
         title,
@@ -105,7 +105,7 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const updatedArticle = await prisma.articles.update({
+    const updatedArticle = await prisma.article.update({
       where: { id },
       data: {
         image,

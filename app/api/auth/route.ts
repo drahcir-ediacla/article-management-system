@@ -13,14 +13,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     }
 
     // Find user in the database
-    const user = await prisma.users.findUnique({
+    const user = await prisma.user.findUnique({
       where: { userName },
     });
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return NextResponse.json({ message: "Invalid username or password" }, { status: 401 });
     }
-
 
     // Generate JWT token
     // const token = jwt.sign(
@@ -30,23 +29,54 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     //   { expiresIn: "1h" }
     // );
 
+    // Generate JWT tokens
     const accessToken = generateAccessToken({ id: user.id, userName: user.userName, type: user.type });
     const refreshToken = generateRefreshToken({ id: user.id, userName: user.userName, type: user.type });
+    const expirationDate = new Date(Date.now() + 1 * 24 * 60 * 60 * 1000); // 1 day from now
 
     // Create a response object
-    const response = NextResponse.json({ message: "Login successful",  status: 200, accessToken });
+    const response = NextResponse.json({ message: "Login successful", status: 200, accessToken });
 
-    
-    // Set refresh token as httpOnly cookie
-    response.cookies.set("refreshJwt", refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Send cookie over HTTPS in production
-      sameSite: "strict", // Restrict cookie sharing across sites
-      maxAge: 7 * 24 * 60 * 60, // 7 days
-      path: "/", // Cookie available across the entire app
-    });
+    try {
+      // Check if a refresh token already exists for the user
+      const existingToken = await prisma.refresh_token.findUnique({
+        where: { userId: user.id },
+      });
 
-    return response;
+      if (existingToken) {
+        // Update the existing refresh token
+        await prisma.refresh_token.update({
+          where: { id: existingToken.id },
+          data: {
+            token: refreshToken,
+            expirationDate: expirationDate,
+          },
+        });
+      } else {
+        // Create a new refresh token entry
+        await prisma.refresh_token.create({
+          data: {
+            userId: user.id,
+            token: refreshToken,
+            expirationDate: expirationDate,
+          },
+        });
+      }
+
+      // Set refresh token as httpOnly cookie
+      response.cookies.set("refreshJwt", refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", // Send cookie over HTTPS in production
+        sameSite: "strict", // Restrict cookie sharing across sites
+        maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
+        path: "/", // Cookie available across the entire app
+      });
+
+      return response;
+    } catch (error) {
+      console.error("Error during refresh token storage:", error);
+      return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    }
   } catch (error) {
     console.error("Error during authentication:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

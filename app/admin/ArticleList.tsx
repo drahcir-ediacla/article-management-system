@@ -5,7 +5,7 @@ import Button from "../components/Button"
 
 const ArticleList = async () => {
 
-    const articles = await prisma.articles.findMany({
+    const articles = await prisma.article.findMany({
         include: {
             company: {
                 select: { id: true, name: true, logo: true, status: true },
