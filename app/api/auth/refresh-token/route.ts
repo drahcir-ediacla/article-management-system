@@ -5,12 +5,12 @@ import { generateAccessToken } from "@/app/lib/jwt";
 
 export async function GET(request: NextRequest) {
     const tokenCookie = request.cookies.get("refreshJwt");
+    
     if (!tokenCookie) {
         return NextResponse.json({ message: "No refresh token provided" }, { status: 401 });
     }
 
-    const refreshToken = tokenCookie.value;
-    console.log("Extracted Refresh Token:", refreshToken);
+    const refreshToken = tokenCookie?.value;
 
     try {
         // Check if refresh token exists in DB
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ message: "Refresh token not found" }, { status: 403 });
         }
 
-        console.log('User ID from DB:', user.userId);
+        console.log("✅ User found:", user.userId);
 
         // Verify and decode the refresh token
         let decoded;

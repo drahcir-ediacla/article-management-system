@@ -1,6 +1,5 @@
 "use client";
 
-
 interface ButtonProps {
   onClick?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | (() => void);
   label?: string;

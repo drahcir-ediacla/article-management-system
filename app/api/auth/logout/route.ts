@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ message: "No refresh token provided" }, { status: 401 });
 }
   const refreshToken = tokenCookie?.value;
-  console.log("Extracted Refresh Token:", refreshToken);
+  console.log("Logout Extracted Refresh Token:", refreshToken);
 
   try {
     // Delete refresh token using Prisma

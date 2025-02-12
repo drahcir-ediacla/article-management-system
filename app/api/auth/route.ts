@@ -35,7 +35,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const expirationDate = new Date(Date.now() + 1 * 24 * 60 * 60 * 1000); // 1 day from now
 
     // Create a response object
-    const response = NextResponse.json({ message: "Login successful", accessToken}, {status: 200} );
+    const response = NextResponse.json({ message: "Login successful", user, accessToken }, {status: 200} );
 
     try {
       // Check if a refresh token already exists for the user
@@ -66,8 +66,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       // Set refresh token as httpOnly cookie
       response.cookies.set("refreshJwt", refreshToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // Send cookie over HTTPS in production
-        sameSite: "strict", // Restrict cookie sharing across sites
+        secure: false, // Send cookie over HTTPS in production
+        sameSite: "lax", // Restrict cookie sharing across sites
         maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
         path: "/", // Cookie available across the entire app
       });

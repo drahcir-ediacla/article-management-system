@@ -1,7 +1,10 @@
 'use client'
 import Link from 'next/link'
+// import { useSelector } from "react-redux";
+import { RootState } from '../redux/store'
 
 const AdminHeader = () => {
+  // const user = useSelector((state: RootState) => state.auth.data);
 
   return (
     <header className='flex justify-between items-center p-[20px] text-very-light-green bg-dark-blue'>

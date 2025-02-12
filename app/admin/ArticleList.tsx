@@ -1,23 +1,127 @@
 
-import prisma from '@/prisma/client'
+'use client'
+// import prisma from '@/prisma/client'
 import Link from "next/link"
 import Button from "../components/Button"
+import { axiosHandler } from '../lib/axiosHandler'
+import { useEffect, useState } from "react";
 
-const ArticleList = async () => {
+interface Company {
+    id: number;
+    logo: string;
+    name: string;
+    status: "Active" | "Inactive";
+}
 
-    const articles = await prisma.article.findMany({
-        include: {
-            company: {
-                select: { id: true, name: true, logo: true, status: true },
-            },
-            writer: {
-                select: { id: true, firstName: true, lastName: true, type: true, status: true },
-            },
-            editor: {
-                select: { id: true, firstName: true, lastName: true, type: true, status: true },
-            },
-        },
-    });
+interface Writer {
+    id: number;
+    firstName: string;
+    lastName: string;
+    userName: string;
+    type: "Writer" | "Editor";
+    status: "Active" | "Inactive";
+};
+
+interface Editor {
+    id: number;
+    firstName: string;
+    lastName: string;
+    userName: string;
+    type: "Writer" | "Editor";
+    status: "Active" | "Inactive";
+};
+
+interface Article {
+    id: number;
+    image: string;
+    title: string;
+    link: string;
+    status: "Published" | "For Edit";
+    writer: Writer;
+    editor: Editor;
+    company: Company;
+};
+
+
+// export async function getArticles(): Promise<Article[]> {
+//     try {
+//         // await new Promise((resolve) => setTimeout(resolve, 3000));
+//         const response = await axiosHandler.get('/api/article', {
+//             headers: { 'Content-Type': 'application/json' },
+//             withCredentials: true
+//         });
+//         return response.data as Article[];
+//     } catch (error) {
+//         console.error("Error fetching articles:", error);
+//     }
+
+//     return []; // Always return an array to avoid undefined return errors
+// }
+
+
+
+
+
+const ArticleList = () => {
+    const [articles, setArticles] = useState<Article[]>([])
+    // const articles: Article[] = await getArticles();
+
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
+        const getArticlaData = async () => {
+            try {
+                // await new Promise((resolve) => setTimeout(resolve, 3000));
+                const response = await axiosHandler.get('/api/article', {
+                    signal: controller.signal
+                });
+                isMounted && setArticles(response.data)
+            } catch (error) {
+                console.error("Error fetching articles:", error);
+            }
+        }
+        getArticlaData();
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
+    }, [])
+
+
+
+
+    // useEffect(() => {
+    //     const fetchArticles = async () => {
+    //         try {
+    //             await new Promise((resolve) => setTimeout(resolve, 3000));
+    //             const response = await axiosHandler.get('/api/article')
+
+    //             if (response.status === 200) {
+    //                 setArticles(response.data)
+    //             }
+    //         } catch (error) {
+    //             console.error('Error fetching articles:', error);
+    //         }
+    //     }
+    //     fetchArticles();
+    // }, [])
+
+    // const articles = await prisma.article.findMany({
+    //     include: {
+    //         company: {
+    //             select: { id: true, name: true, logo: true, status: true },
+    //         },
+    //         writer: {
+    //             select: { id: true, firstName: true, lastName: true, type: true, status: true },
+    //         },
+    //         editor: {
+    //             select: { id: true, firstName: true, lastName: true, type: true, status: true },
+    //         },
+    //     },
+    // });
+
+
 
     return (
         <>
