@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 import jwt from "jsonwebtoken";
-import { generateAccessToken } from "@/app/lib/jwt";
+import { generateAccessToken } from "@/app/_lib/jwt";
 
 export async function GET(request: NextRequest) {
     const tokenCookie = request.cookies.get("refreshJwt");

@@ -1,19 +1,18 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { store } from "./redux/store";
-import { axiosHandler } from "./lib/axiosHandler";
+import { store, useAppDispatch } from "./redux/store";
+import { axiosHandler } from "./_lib/axiosHandler";
 import { setAccessToken } from "./redux/reducer/tokenSlice";
 import axios from "axios";
 import { IoInformationCircleSharp } from "react-icons/io5";
-import Input from './components/Input'
-import Button from './components/Button'
+import Input from './_components/Input'
+import Button from './_components/Button'
 
 const LoginForm = () => {
 
     const router = useRouter()
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [userNameError, setUserNameError] = useState('');

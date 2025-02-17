@@ -2,11 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import authReducer from "./reducer/authSlice"; // Ensure path is correct
 import tokenReducer from './reducer/tokenSlice'
+import articleListReducer from './reducer/articleListSlice'
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     token: tokenReducer,
+    articleList: articleListReducer,
   },
   devTools: process.env.NODE_ENV === "development", // Disable in production
 });

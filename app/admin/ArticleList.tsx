@@ -2,9 +2,14 @@
 'use client'
 // import prisma from '@/prisma/client'
 import Link from "next/link"
-import Button from "../components/Button"
-import { axiosHandler } from '../lib/axiosHandler'
+import Image from "next/image";
+import Button from "../_components/Button"
+import { axiosHandler } from '../_lib/axiosHandler'
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { store, useAppDispatch, useAppSelector } from "../redux/store";
+import { getArticles } from "../redux/actions/articleListActions";
 
 interface Company {
     id: number;
@@ -63,30 +68,39 @@ interface Article {
 
 
 const ArticleList = () => {
-    const [articles, setArticles] = useState<Article[]>([])
+    // const [articles, setArticles] = useState<Article[]>([])
     // const articles: Article[] = await getArticles();
+    // const articles = useSelector((state: RootState) => state.articleList.data);
+
+
+    const dispatch = useAppDispatch();
+    const articles = useAppSelector((state) => state.articleList.data);
 
     useEffect(() => {
-        let isMounted = true;
-        const controller = new AbortController();
+        dispatch(getArticles());
+    }, [dispatch]);
 
-        const getArticlaData = async () => {
-            try {
-                // await new Promise((resolve) => setTimeout(resolve, 3000));
-                const response = await axiosHandler.get('/api/article', {
-                    signal: controller.signal
-                });
-                isMounted && setArticles(response.data)
-            } catch (error) {
-                console.error("Error fetching articles:", error);
-            }
-        }
-        getArticlaData();
-        return () => {
-            isMounted = false;
-            controller.abort();
-        }
-    }, [])
+    // useEffect(() => {
+    //     let isMounted = true;
+    //     const controller = new AbortController();
+
+    //     const getArticlaData = async () => {
+    //         try {
+    //             // await new Promise((resolve) => setTimeout(resolve, 3000));
+    //             const response = await axiosHandler.get('/api/article', {
+    //                 signal: controller.signal
+    //             });
+    //             isMounted && setArticles(response.data)
+    //         } catch (error) {
+    //             console.error("Error fetching articles:", error);
+    //         }
+    //     }
+    //     getArticlaData();
+    //     return () => {
+    //         isMounted = false;
+    //         controller.abort();
+    //     }
+    // }, [])
 
 
 
@@ -161,7 +175,9 @@ const ArticleList = () => {
                         {articles.map((article) => (
                             <tr key={article.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    <img src={article.image} alt="" className="w-[50px] h-[50px] object-cover" />
+                                    <div className="w-[50px] h-[50px] overflow-hidden">
+                                        <Image src={article.image} alt="" width={50} height={50} objectFit="cover" />
+                                    </div>
                                 </th>
                                 <td className="px-6 py-4">
                                     {article.title}

@@ -15,11 +15,13 @@ interface UserData {
 interface AuthState {
   data: UserData | null;
   loading: boolean;
+  error: string | null,
 }
 
 const initialState: AuthState = {
   data: null,
   loading: false,
+  error: null,
 };
 
 const authSlice = createSlice({
