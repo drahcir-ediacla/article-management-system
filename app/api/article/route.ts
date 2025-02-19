@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
-import { getAuthUser } from "../../_lib/getAuthUser";
+import { checkAuthUser } from "../../_lib/checkAuthUser";
 
 export async function GET(request: NextRequest) {
   try {
 
-    const authUser = await getAuthUser(request); // Get authenticated user
+    const authUser = await checkAuthUser(request); // Get authenticated user
     console.log('authUser:', authUser)
 
     if (!authUser) {
@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
 
-    const authUser = await getAuthUser(request); // Get authenticated user
+    const authUser = await checkAuthUser(request); // Get authenticated user
 
     if (!authUser) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
 
-    const authUser = await getAuthUser(request); // Get authenticated user
+    const authUser = await checkAuthUser(request); // Get authenticated user
 
     if (!authUser) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

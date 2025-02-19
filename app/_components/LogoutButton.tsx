@@ -1,7 +1,7 @@
 "use client";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation"; // ✅ Use Next.js router instead of window.location.href
-import { axiosHandler } from "../lib/axiosHandler";
+import { axiosInstance } from "../_lib/axiosInstance";
 import { clearAccessToken } from "../redux/reducer/tokenSlice"; // ✅ Updated action name for clarity
 import { TbLogout2 } from "react-icons/tb";
 
@@ -11,7 +11,7 @@ const LogoutButton = () => {
 
     const logoutUser = async () => {
         try {
-            await axiosHandler.get("/api/auth/logout");
+            await axiosInstance.get("/api/auth/logout");
 
             // ✅ Clear token in Redux
             dispatch(clearAccessToken());

@@ -2,14 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import prisma from "@/prisma/client";
-import { generateAccessToken, generateRefreshToken } from "@/app/lib/jwt";
+import { generateAccessToken, generateRefreshToken } from "@/app/_lib/jwt";
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     const { userName, password } = await request.json();
 
     if (!userName || !password) {
-      return NextResponse.json({ message: "Username and password are required" }, { status: 400 });
+      return NextResponse.json({ message: "Invalid username or password" }, { status: 400 });
     }
 
     // Find user in the database

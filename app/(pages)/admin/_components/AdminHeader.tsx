@@ -1,7 +1,7 @@
-'use client'
+
 import Link from 'next/link'
 // import { useSelector } from "react-redux";
-import { RootState } from '../redux/store'
+import { RootState } from '../../../redux/store'
 
 const AdminHeader = () => {
   // const user = useSelector((state: RootState) => state.auth.data);

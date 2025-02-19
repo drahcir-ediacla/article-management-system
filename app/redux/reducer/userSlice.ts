@@ -10,6 +10,7 @@ interface UserData {
   lastName: string;
   status: "Active" | "Inactive";
   type: "Writer" | "Editor";
+  password: string;
 }
 
 interface AuthState {

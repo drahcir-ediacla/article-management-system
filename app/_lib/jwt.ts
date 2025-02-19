@@ -20,7 +20,7 @@ if (!refreshTokenSecret) {
  * Generate a JWT token
  */
 export function generateAccessToken(payload: object): string {
-  return jwt.sign(payload, accessTokenSecret, {expiresIn: "15m"});
+  return jwt.sign(payload, accessTokenSecret, {expiresIn: "30s"});
 }
 
 export function generateRefreshToken(payload: object): string {

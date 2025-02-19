@@ -4,7 +4,7 @@ import { store } from "../redux/store"; // Import Redux store
 import { setAccessToken, clearAccessToken } from "../redux/reducer/tokenSlice"; // Import Redux actions
 
 // Create an Axios instance
-export const axiosHandler = axios.create({
+export const axiosInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
     headers: { "Content-Type": "application/json" },
     withCredentials: true, // ✅ Ensure credentials are always sent
@@ -14,7 +14,7 @@ export const axiosHandler = axios.create({
 // Refresh Access Token
 export const refreshAccessToken = async () => {
     try {
-        const response = await axiosHandler.get("/api/auth/refresh-token", { 
+        const response = await axiosInstance.get("/api/auth/refresh-token", { 
             withCredentials: true // ✅ Ensure cookies are sent
         });
 
@@ -36,7 +36,7 @@ export const refreshAccessToken = async () => {
 };
 
 // Attach Authorization header to requests
-axiosHandler.interceptors.request.use(
+axiosInstance.interceptors.request.use(
     async (config) => {
         const accessToken = store.getState().token.accessToken; // ✅ Get token from Redux
         console.log("Interceptor Access Token:", accessToken); // ✅ Check token before attaching
@@ -58,7 +58,7 @@ axiosHandler.interceptors.request.use(
 let isRefreshing = false;
 let refreshPromise: Promise<string | null> | null = null;
 
-axiosHandler.interceptors.response.use(
+axiosInstance.interceptors.response.use(
     (response) => response, // ✅ Pass through successful responses
     async (error) => {
         const originalRequest = error.config;
@@ -83,7 +83,7 @@ axiosHandler.interceptors.response.use(
             if (newAccessToken) {
                 // ✅ Retry the failed request with the new token
                 originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-                return axiosHandler(originalRequest);
+                return axiosInstance(originalRequest);
             } else {
                 // ✅ Refresh failed → Force logout
                 store.dispatch(clearAccessToken());

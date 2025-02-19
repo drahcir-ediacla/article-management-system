@@ -1,7 +1,7 @@
 
 import { Suspense } from 'react';
-import ArticleList from './ArticleList'
-import LogoutButton from '../_components/LogoutButton';
+import ArticleList from './_components/ArticleList'
+import LogoutButton from '../../_components/LogoutButton';
 import Loading from './loading';
 
 const AdminHomePage = async () => {

@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import AdminHeader from './AdminHeader';
+import AdminHeader from './_components/AdminHeader';
 interface Props {
     children: ReactNode;
 }

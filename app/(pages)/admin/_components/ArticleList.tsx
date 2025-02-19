@@ -3,13 +3,13 @@
 // import prisma from '@/prisma/client'
 import Link from "next/link"
 import Image from "next/image";
-import Button from "../_components/Button"
-import { axiosHandler } from '../_lib/axiosHandler'
+import Button from "../../../_components/Button"
+import { axiosInstance } from '../../../_lib/axiosInstance'
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
-import { store, useAppDispatch, useAppSelector } from "../redux/store";
-import { getArticles } from "../redux/actions/articleListActions";
+import { RootState } from "../../../redux/store";
+import { store, useAppDispatch, useAppSelector } from "../../../redux/store";
+import { getArticles } from "../../../redux/actions/articleListActions";
 
 interface Company {
     id: number;
@@ -51,7 +51,7 @@ interface Article {
 // export async function getArticles(): Promise<Article[]> {
 //     try {
 //         // await new Promise((resolve) => setTimeout(resolve, 3000));
-//         const response = await axiosHandler.get('/api/article', {
+//         const response = await axiosInstance.get('/api/article', {
 //             headers: { 'Content-Type': 'application/json' },
 //             withCredentials: true
 //         });
@@ -87,7 +87,7 @@ const ArticleList = () => {
     //     const getArticlaData = async () => {
     //         try {
     //             // await new Promise((resolve) => setTimeout(resolve, 3000));
-    //             const response = await axiosHandler.get('/api/article', {
+    //             const response = await axiosInstance.get('/api/article', {
     //                 signal: controller.signal
     //             });
     //             isMounted && setArticles(response.data)
@@ -109,7 +109,7 @@ const ArticleList = () => {
     //     const fetchArticles = async () => {
     //         try {
     //             await new Promise((resolve) => setTimeout(resolve, 3000));
-    //             const response = await axiosHandler.get('/api/article')
+    //             const response = await axiosInstance.get('/api/article')
 
     //             if (response.status === 200) {
     //                 setArticles(response.data)

@@ -17,7 +17,7 @@
 //   }
 // }
 
-import { verifyToken } from "@/app/lib/jwt";
+import { verifyToken } from "@/app/_lib/jwt";
 import { NextRequest } from "next/server";
 import { JwtPayload } from "jsonwebtoken";
 
@@ -25,7 +25,7 @@ interface AuthUser extends JwtPayload {
   id: string;
 }
 
-export async function getAuthUser(request: NextRequest): Promise<AuthUser | null> {
+export async function checkAuthUser(request: NextRequest): Promise<AuthUser | null> {
   const authHeader = request.headers.get("Authorization"); // Extract from request headers
   if (!authHeader || !authHeader.startsWith("Bearer ")) return null;
 
